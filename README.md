@@ -14,6 +14,7 @@ https://docs.google.com/presentation/d/12sATP2io2e019V2TdOB8ufYkTzZ9z0x459EKlEfH
 
 ## Large Lab ##
 
+aws lambda list-functions --max-items 10
 
 
 
