@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Front-end</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" type="text/javascript"
+            charset="utf-8"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("#py").click(function () {
+                $("#uploadfile").click();
+            });
+            $("#uploadfile").change(function () {
+                alert("Successfully get it!");
+                $("#form1").submit();
+            });
+        })
+    </script>
+
+</head>
+<body>
+<input type="button" id="py" value="click me to upload python file!">
+
+<!--/*@thymesVar id="helloMessage" type="model"*/-->
+<form style="display: none;" id="form1" action="#" method="post" target="myframe" th:action="@{/sayhello}" th:object="${helloMessage}">
+    <input type="file" name="uploadfile" id="uploadfile"/>
+</form>
+<iframe style="display: none;" id="myframe"></iframe>
+</body>
+</html>
