@@ -44,7 +44,7 @@ public class CreateInstance {
 //        }
 
         String name = "Liu";
-        String amiId = "aki-806d67e4";
+        String amiId = "ami-004c1e61ae5d76090";
 
         Region region = Region.EU_WEST_2;
         Ec2Client ec2 = Ec2Client.builder()
