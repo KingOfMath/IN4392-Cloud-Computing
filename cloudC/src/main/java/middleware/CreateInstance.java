@@ -48,7 +48,7 @@ public class CreateInstance {
 //        }
 
         String name = "Liu";
-        String amiId = "ami-04750cab749ae2011";
+        String amiId = "ami-0d701a5385f6739fb";
 
         Region region = Region.EU_WEST_2;
         Ec2Client ec2 = Ec2Client.builder()
@@ -62,11 +62,11 @@ public class CreateInstance {
         
         Thread.sleep(15*60*MS);
 
-        stopInstance(ec2,instanceId);
+        //stopInstance(ec2,instanceId);
 
         Thread.sleep(60*MS);
 
-        terminateEC2(ec2,instanceId);
+        //terminateEC2(ec2,instanceId);
 
     }
 
