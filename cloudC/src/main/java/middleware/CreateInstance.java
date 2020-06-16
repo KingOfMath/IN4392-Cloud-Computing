@@ -60,11 +60,11 @@ public class CreateInstance {
 
         startInstance(ec2, instanceId);
         
-        Thread.sleep(120*MS);
+        Thread.sleep(15*60*MS);
 
         stopInstance(ec2,instanceId);
 
-        Thread.sleep(120*MS);
+        Thread.sleep(60*MS);
 
         terminateEC2(ec2,instanceId);
 
@@ -78,6 +78,8 @@ public class CreateInstance {
                 .instanceType(InstanceType.T2_MICRO)
                 .maxCount(1)
                 .minCount(1)
+                .keyName("New")
+                .securityGroups("launch-wizard-1")
                 .build();
 
 
@@ -147,5 +149,5 @@ public class CreateInstance {
             System.exit(1);
         }
     }
-    
+
 }
