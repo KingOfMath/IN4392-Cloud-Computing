@@ -18,13 +18,12 @@ package middleware;
 // snippet-start:[ec2.java2.create_instance.import]
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.ec2.Ec2Client;
-import software.amazon.awssdk.services.ec2.model.InstanceType;
-import software.amazon.awssdk.services.ec2.model.RunInstancesRequest;
-import software.amazon.awssdk.services.ec2.model.RunInstancesResponse;
-import software.amazon.awssdk.services.ec2.model.Tag;
-import software.amazon.awssdk.services.ec2.model.CreateTagsRequest;
-import software.amazon.awssdk.services.ec2.model.Ec2Exception;
+import software.amazon.awssdk.services.ec2.model.*;
+import software.amazon.awssdk.services.ec2.*;
+
 // snippet-end:[ec2.java2.create_instance.import]
+
+
 
 /**
  * Creates an EC2 instance
@@ -32,7 +31,7 @@ import software.amazon.awssdk.services.ec2.model.Ec2Exception;
 
 
 public class CreateInstance {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         final String USAGE =
                 "To run this example, supply an instance name and AMI image id\n" +
                         "Both values can be obtained from the AWS Console\n" +
@@ -44,26 +43,34 @@ public class CreateInstance {
 //        }
 
         String name = "Liu";
-        String amiId = "ami-004c1e61ae5d76090";
+        String amiId = "ami-04750cab749ae2011";
 
         Region region = Region.EU_WEST_2;
         Ec2Client ec2 = Ec2Client.builder()
                 .region(region)
                 .build();
 
-        String instanceId = createEC2Instance(ec2,name, amiId) ;
-        System.out.println("The instance ID is "+instanceId);
+        String instanceId = createEC2Instance(ec2, name, amiId);
+        System.out.println("The instance ID is " + instanceId);
+
+        startInstance(ec2, instanceId);
+        
+        Thread.sleep(60*1000);
+
+        stopInstance(ec2,instanceId);
+
     }
 
     // snippet-start:[ec2.java2.create_instance.main]
-    public static String createEC2Instance(Ec2Client ec2,String name, String amiId ) {
+    public static String createEC2Instance(Ec2Client ec2, String name, String amiId) {
 
         RunInstancesRequest runRequest = RunInstancesRequest.builder()
                 .imageId(amiId)
-                .instanceType(InstanceType.T1_MICRO)
+                .instanceType(InstanceType.T2_MICRO)
                 .maxCount(1)
                 .minCount(1)
                 .build();
+
 
         RunInstancesResponse response = ec2.runInstances(runRequest);
         String instanceId = response.instances().get(0).instanceId();
@@ -92,5 +99,23 @@ public class CreateInstance {
         }
         // snippet-end:[ec2.java2.create_instance.main]
         return "";
+    }
+
+    public static void startInstance(Ec2Client ec2, String instanceId) {
+
+        StartInstancesRequest request = StartInstancesRequest.builder()
+                .instanceIds(instanceId)
+                .build();
+
+        ec2.startInstances(request);
+    }
+
+    public static void stopInstance(Ec2Client ec2, String instanceId) {
+
+        StopInstancesRequest request = StopInstancesRequest.builder()
+                .instanceIds(instanceId)
+                .build();
+
+        ec2.stopInstances(request);
     }
 }
