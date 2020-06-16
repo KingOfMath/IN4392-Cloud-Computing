@@ -21,6 +21,8 @@ import software.amazon.awssdk.services.ec2.Ec2Client;
 import software.amazon.awssdk.services.ec2.model.*;
 import software.amazon.awssdk.services.ec2.*;
 
+import java.util.List;
+
 // snippet-end:[ec2.java2.create_instance.import]
 
 
@@ -31,6 +33,9 @@ import software.amazon.awssdk.services.ec2.*;
 
 
 public class CreateInstance {
+
+    private final static int MS = 1000;
+
     public static void main(String[] args) throws InterruptedException {
         final String USAGE =
                 "To run this example, supply an instance name and AMI image id\n" +
@@ -55,9 +60,13 @@ public class CreateInstance {
 
         startInstance(ec2, instanceId);
         
-        Thread.sleep(60*1000);
+        Thread.sleep(120*MS);
 
         stopInstance(ec2,instanceId);
+
+        Thread.sleep(120*MS);
+
+        terminateEC2(ec2,instanceId);
 
     }
 
@@ -118,4 +127,25 @@ public class CreateInstance {
 
         ec2.stopInstances(request);
     }
+    public static void terminateEC2( Ec2Client ec2, String instanceID) {
+
+        try{
+            TerminateInstancesRequest ti = TerminateInstancesRequest.builder()
+                    .instanceIds(instanceID)
+                    .build();
+
+            TerminateInstancesResponse response = ec2.terminateInstances(ti);
+
+            List<InstanceStateChange> list = response.terminatingInstances();
+
+            for (int i = 0; i < list.size(); i++) {
+                InstanceStateChange sc = (list.get(i));
+                System.out.println("The ID of the terminated instance is "+sc.instanceId());
+            }
+        } catch (Ec2Exception e) {
+            System.err.println(e.awsErrorDetails().errorMessage());
+            System.exit(1);
+        }
+    }
+    
 }
