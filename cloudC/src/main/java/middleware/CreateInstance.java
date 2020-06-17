@@ -48,34 +48,50 @@ public class CreateInstance {
 //        }
 
         String name = "Liu";
-        String amiId = "ami-0d701a5385f6739fb";
+        String amiId = "ami-055754bcf99180715";
 
         Region region = Region.EU_WEST_2;
         Ec2Client ec2 = Ec2Client.builder()
                 .region(region)
                 .build();
 
-        String instanceId = createEC2Instance(ec2, name, amiId);
+        String instanceId = createEC2Instance(ec2, name, amiId,2);
         System.out.println("The instance ID is " + instanceId);
 
         startInstance(ec2, instanceId);
         
         Thread.sleep(15*60*MS);
 
-        //stopInstance(ec2,instanceId);
+        stopInstance(ec2,instanceId);
 
         Thread.sleep(60*MS);
 
-        //terminateEC2(ec2,instanceId);
+        terminateEC2(ec2,instanceId);
 
     }
 
     // snippet-start:[ec2.java2.create_instance.main]
-    public static String createEC2Instance(Ec2Client ec2, String name, String amiId) {
+    public static String createEC2Instance(Ec2Client ec2, String name, String amiId, Integer priority) {
+
+        InstanceType inst;
+
+        switch (priority){
+            case 1:
+                inst = InstanceType.T2_NANO;
+                break;
+            case 2:
+                inst = InstanceType.T2_MICRO;
+                break;
+            case 3:
+                inst = InstanceType.T2_MEDIUM;
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + priority);
+        }
 
         RunInstancesRequest runRequest = RunInstancesRequest.builder()
                 .imageId(amiId)
-                .instanceType(InstanceType.T2_MICRO)
+                .instanceType(inst)
                 .maxCount(1)
                 .minCount(1)
                 .keyName("New")
