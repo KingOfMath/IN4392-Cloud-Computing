@@ -107,7 +107,6 @@
     <orderEntry type="library" name="Maven: software.amazon.awssdk:aws-query-protocol:2.13.36" level="project" />
     <orderEntry type="library" name="Maven: software.amazon.awssdk:protocol-core:2.13.36" level="project" />
     <orderEntry type="library" name="Maven: software.amazon.awssdk:sdk-core:2.13.36" level="project" />
-    <orderEntry type="library" name="Maven: software.amazon.awssdk:profiles:2.13.36" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-core:2.9.8" level="project" />
     <orderEntry type="library" name="Maven: org.reactivestreams:reactive-streams:1.0.2" level="project" />
     <orderEntry type="library" name="Maven: software.amazon.awssdk:auth:2.13.36" level="project" />
@@ -135,5 +134,16 @@
     <orderEntry type="library" scope="RUNTIME" name="Maven: io.netty:netty-transport-native-unix-common:4.1.33.Final" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: com.typesafe.netty:netty-reactive-streams-http:2.0.4" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: com.typesafe.netty:netty-reactive-streams:2.0.4" level="project" />
+    <orderEntry type="library" name="Maven: software.amazon.awssdk:s3:2.13.36" level="project" />
+    <orderEntry type="library" name="Maven: software.amazon.awssdk:aws-xml-protocol:2.13.36" level="project" />
+    <orderEntry type="library" name="Maven: software.amazon.awssdk:arns:2.13.36" level="project" />
+    <orderEntry type="library" name="Maven: software.amazon.awssdk:profiles:2.13.36" level="project" />
+    <orderEntry type="library" name="Maven: software.amazon.awssdk:iam:2.13.36" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-thymeleaf:2.0.1.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.thymeleaf:thymeleaf-spring5:3.0.11.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.thymeleaf:thymeleaf:3.0.11.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.attoparser:attoparser:2.0.5.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.unbescape:unbescape:1.1.6.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.thymeleaf.extras:thymeleaf-extras-java8time:3.0.3.RELEASE" level="project" />
   </component>
 </module>

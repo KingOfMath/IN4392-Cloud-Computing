@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>POST</title>
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div style="text-align: center;">
+    <br><br>
+    <h2 style="color:green">Form</h2>
+    <br><br>
+
+    <form class="form-horizontal" role="form" action="#" th:action="@{/submit}" th:object="${task}" method="post">
+
+        <div class="form-group" style="width:300px">
+            <label for="fileName" class="col-sm-2 control-label">Name</label>
+            <div class="col-sm-10">
+                <input type="text"  th:field="*{fileName}" class="form-control" id="fileName" placeholder="Enter name">
+            </div>
+        </div>
+
+        <div class="form-group" style="width:300px">
+            <label for="priority" class="col-sm-2 control-label">priority</label>
+            <div class="col-sm-10">
+                <input type="text" th:field="*{priority}" class="form-control" id="priority" placeholder="Enter priority">
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <div>
+                <button type="submit" class="btn btn-primary" id="btn">Submit</button>
+                <input type="reset" class="btn btn-warning" value="Reset" />
+            </div>
+        </div>
+    </form>
+
+</div>
+</body>
+</html>
