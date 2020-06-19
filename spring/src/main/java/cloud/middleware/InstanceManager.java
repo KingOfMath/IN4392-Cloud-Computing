@@ -36,8 +36,8 @@ public class InstanceManager {
     }
 
     private final static int MS = 1000;
-    private String name = "Liu";
-    private String amiId = "ami-055754bcf99180715";
+//    private String name = "Liu";
+//    private String amiId = "ami-055754bcf99180715";
     Region region = Region.EU_WEST_2;
     Ec2Client ec2;
 
@@ -48,7 +48,7 @@ public class InstanceManager {
     }
 
     // snippet-start:[ec2.java2.create_instance.main]
-    public String createEC2Instance(Integer priority) {
+    public String createEC2Instance(Integer priority,Integer jobtype) {
 
         InstanceType inst;
 
@@ -72,13 +72,32 @@ public class InstanceManager {
                 throw new IllegalStateException("Unexpected value: " + priority);
         }
 
+        switch (jobtype) {
+            case 1:
+                String name = "Job1:";
+                String amiId = "ami-055754bcf99180715";
+                break;
+            case 2:
+                String name = "Job2:resize";
+                String amiId = "ami-0349394cd19506ac5";
+                break;
+            case 3:
+                String name = "Job3:resize";
+                String amiId = "ami-020b9844fd7304617";
+                break;
+            case 4:
+                //String name = "Job4:resize";
+                //String amiId = "ami-0349394cd19506ac5";
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + jobtype);
+        }
+
         RunInstancesRequest runRequest = RunInstancesRequest.builder()
                 .imageId(amiId)
                 .instanceType(inst)
                 .maxCount(1)
                 .minCount(1)
-                .keyName("New")
-                .securityGroups("launch-wizard-1")
                 .build();
 
 
