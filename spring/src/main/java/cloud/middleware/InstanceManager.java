@@ -16,28 +16,28 @@ import java.util.List;
 
 public class InstanceManager {
 
-    public static void main(String[] args) throws InterruptedException {
-
-        InstanceManager instanceManager = new InstanceManager();
-
-        String instanceId = instanceManager.createEC2Instance(2);
-        System.out.println("The instance ID is " + instanceId);
-
-        instanceManager.startInstance(instanceId);
-
-        Thread.sleep(15 * 60 * MS);
-
-        instanceManager.stopInstance(instanceId);
-
-        Thread.sleep(60 * MS);
-
-        instanceManager.terminateEC2(instanceId);
-
-    }
+//    public static void main(String[] args) throws InterruptedException {
+//
+//        InstanceManager instanceManager = new InstanceManager();
+//
+//        String instanceId = instanceManager.createEC2Instance(2);
+//        System.out.println("The instance ID is " + instanceId);
+//
+//        instanceManager.startInstance(instanceId);
+//
+//        Thread.sleep(15 * 60 * MS);
+//
+//        instanceManager.stopInstance(instanceId);
+//
+//        Thread.sleep(60 * MS);
+//
+//        instanceManager.terminateEC2(instanceId);
+//
+//    }
 
     private final static int MS = 1000;
-//    private String name = "Liu";
-//    private String amiId = "ami-055754bcf99180715";
+    private String name = "Liu";
+    private String amiId = "ami-055754bcf99180715";
     Region region = Region.EU_WEST_2;
     Ec2Client ec2;
 
@@ -48,7 +48,7 @@ public class InstanceManager {
     }
 
     // snippet-start:[ec2.java2.create_instance.main]
-    public String createEC2Instance(Integer priority,Integer jobtype) {
+    public String createEC2Instance(Integer priority, Integer jobtype) {
 
         InstanceType inst;
 
@@ -72,22 +72,23 @@ public class InstanceManager {
                 throw new IllegalStateException("Unexpected value: " + priority);
         }
 
+
         switch (jobtype) {
             case 1:
-                String name = "Job1:";
-                String amiId = "ami-055754bcf99180715";
+                name = "Job1";
+                amiId = "ami-055754bcf99180715";
                 break;
             case 2:
-                String name = "Job2:resize";
-                String amiId = "ami-0349394cd19506ac5";
+                name = "Job2";
+                amiId = "ami-0349394cd19506ac5";
                 break;
             case 3:
-                String name = "Job3:resize";
-                String amiId = "ami-020b9844fd7304617";
+                name = "Job3";
+                amiId = "ami-020b9844fd7304617";
                 break;
             case 4:
-                String name = "JobCommon";
-                String amiId = "ami-009b93e04a115e0b0";
+                name = "JobCommon";
+                amiId = "ami-009b93e04a115e0b0";
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + jobtype);
@@ -98,8 +99,9 @@ public class InstanceManager {
                 .instanceType(inst)
                 .maxCount(1)
                 .minCount(1)
+                .securityGroups("default")
+                .keyName("Liu")
                 .build();
-
 
         RunInstancesResponse response = ec2.runInstances(runRequest);
         String instanceId = response.instances().get(0).instanceId();

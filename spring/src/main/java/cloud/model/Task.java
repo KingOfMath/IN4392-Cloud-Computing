@@ -11,6 +11,19 @@ public class Task {
     private Integer taskId;
     private String fileName;
     private double load;
+    private Integer priority;
+
+    public Task() {
+
+    }
+
+    public Integer getPriority() {
+        return priority;
+    }
+
+    public void setPriority(Integer priority) {
+        this.priority = priority;
+    }
 
     public Task(Integer taskId, double load) {
         this.taskId = taskId;

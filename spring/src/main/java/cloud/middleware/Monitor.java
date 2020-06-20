@@ -13,24 +13,24 @@ import java.util.Set;
 
 public class Monitor {
     public static void main(String[] args) {
-        Monitor m = new Monitor();
-        m.monitorS3Buckets();
+        Monitor monitor = new Monitor();
+        System.out.println(monitor.getPublicDNS());
     }
 
     private static Region region = Region.EU_WEST_2;
     private static Ec2Client ec2;
 
-    Monitor() {
+    public Monitor() {
         ec2 = Ec2Client.builder().region(region).build();
     }
 
-    public void monitorS3Buckets(){
+    public void monitorS3Buckets() {
         Set<String> nameList = new HashSet<>();
         S3Client s3 = S3Client.builder().region(region).build();
         ListBucketsRequest listBucketsRequest = ListBucketsRequest.builder().build();
         ListBucketsResponse listBucketsResponse = s3.listBuckets(listBucketsRequest);
         listBucketsResponse.buckets().stream().forEach(x -> nameList.add(x.name()));
-        for (String bucketName: nameList) {
+        for (String bucketName : nameList) {
             try {
                 ListObjectsRequest listObjects = ListObjectsRequest
                         .builder()
@@ -40,7 +40,7 @@ public class Monitor {
                 ListObjectsResponse res = s3.listObjects(listObjects);
                 List<S3Object> objects = res.contents();
 
-                System.out.print("\n Current bucket : "+bucketName);
+                System.out.print("\n Current bucket : " + bucketName);
                 for (S3Object s3Object : objects) {
                     System.out.print("\n The name of the key : " + s3Object.key());
                     System.out.print("\n The object : " + s3Object.size() / 1024 + " KBs");
@@ -95,12 +95,12 @@ public class Monitor {
                                         "AMI %s, " +
                                         "type %s, " +
                                         "state %s " +
-                                        "and monitoring state %s",
+                                        "and monitoring DNS %s",
                                 instance.instanceId(),
                                 instance.imageId(),
                                 instance.instanceType(),
                                 instance.state().name(),
-                                instance.monitoring().state());
+                                instance.publicDnsName());
                         System.out.println("");
                     }
                 }
@@ -113,7 +113,7 @@ public class Monitor {
         }
     }
 
-    public Set<String> getRunningInstancesIdByName(String name){
+    public Set<String> getRunningInstancesIdByName(String name) {
         Set<String> runningSet = new HashSet<>();
         String nextToken = null;
         try {
@@ -129,7 +129,7 @@ public class Monitor {
                 for (Reservation reservation : response.reservations()) {
                     for (Instance instance : reservation.instances()) {
                         if (instance.state().name().toString().equals("running")
-                                && instance.tags().get(0).value().equals(name)){
+                                && instance.tags().get(0).value().equals(name)) {
                             runningSet.add(instance.instanceId());
                         }
                     }
@@ -144,7 +144,7 @@ public class Monitor {
         return runningSet;
     }
 
-    public Set<Instance> getRunningInstancesByName(String name){
+    public Set<Instance> getRunningInstancesByName(String name) {
         Set<Instance> runningSet = new HashSet<>();
         String nextToken = null;
         try {
@@ -160,7 +160,7 @@ public class Monitor {
                 for (Reservation reservation : response.reservations()) {
                     for (Instance instance : reservation.instances()) {
                         if (instance.state().name().toString().equals("running")
-                                && instance.tags().get(0).value().equals(name)){
+                                && instance.tags().get(0).value().equals(name)) {
                             runningSet.add(instance);
                         }
                     }
@@ -173,6 +173,44 @@ public class Monitor {
             System.exit(1);
         }
         return runningSet;
+    }
+
+    public Set<Instance> getRunningInstances() {
+        Set<Instance> runningSet = new HashSet<>();
+        String nextToken = null;
+        try {
+
+            do {
+                DescribeInstancesRequest request = DescribeInstancesRequest
+                        .builder()
+                        .maxResults(6)
+                        .nextToken(nextToken)
+                        .build();
+                DescribeInstancesResponse response = ec2.describeInstances(request);
+
+                for (Reservation reservation : response.reservations()) {
+                    runningSet.addAll(reservation.instances());
+                }
+                nextToken = response.nextToken();
+            } while (nextToken != null);
+
+        } catch (Ec2Exception e) {
+            System.err.println(e.awsErrorDetails().errorMessage());
+            System.exit(1);
+        }
+        return runningSet;
+    }
+
+    public Set<String> getPublicDNS(){
+        Set<String> DNS = new HashSet<>();
+        for (Instance instance : getRunningInstances()) {
+            String keyName = instance.keyName();
+            if (keyName == null) continue;
+            if (keyName.equals("Liu")){
+                DNS.add(instance.publicDnsName());
+            }
+        }
+        return DNS;
     }
 
 }

@@ -8,6 +8,11 @@ import java.security.Security;
 
 public class securityGroup {
 
+    public static void main(String[] args) {
+        securityGroup security = new securityGroup();
+        security.describeSecurityGroup(security.groupId);
+    }
+
     private static Region region = Region.EU_WEST_2;
     private static Ec2Client ec2;
     private String name = "Liu";

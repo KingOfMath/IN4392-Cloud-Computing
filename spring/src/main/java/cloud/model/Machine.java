@@ -5,12 +5,22 @@ public class Machine {
     private Double maxLoad;
     private Integer priority;
     private Double currentLoad;
+    private Double leftLoad;
 
     public Machine(String instanceId, Integer priority, Double maxLoad, Double currentLoad) {
         this.instanceId = instanceId;
         this.maxLoad = maxLoad;
         this.priority = priority;
         this.currentLoad = currentLoad;
+        this.leftLoad = this.maxLoad - this.currentLoad;
+    }
+
+    public Double getLeftLoad() {
+        return leftLoad;
+    }
+
+    public void setLeftLoad(Double leftLoad) {
+        this.leftLoad = leftLoad;
     }
 
     public Double getCurrentLoad() {
