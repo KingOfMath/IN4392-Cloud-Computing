@@ -86,8 +86,8 @@ public class InstanceManager {
                 String amiId = "ami-020b9844fd7304617";
                 break;
             case 4:
-                //String name = "Job4:resize";
-                //String amiId = "ami-0349394cd19506ac5";
+                String name = "JobCommon";
+                String amiId = "ami-009b93e04a115e0b0";
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + jobtype);
